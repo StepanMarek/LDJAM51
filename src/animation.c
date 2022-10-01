@@ -1,38 +1,46 @@
 #include "raylib.h"
 #include "animation.h"
 
-Animation animation_CreateAnimation(Texture2D texture, int frames, int width, int height, int start, int upf){
+Animation animation_CreateAnimation(Texture2D texture, int frames, int width, int height, int start, int upf, float renderWidth, float renderHeight){
 	Animation anim;
 	anim.numFrames = frames;
 	anim.frameWidth = width;
 	anim.frameHeight = height;
 	anim.startFrame = start;
 	anim.frame = (Rectangle){start * width, 0, width, height};
+	anim.renderSize = (Vector2){renderWidth, renderHeight};
 	anim.texture = texture;
 	anim.updates = 0;
-	anim.pUpdates = &(anim.updates);
+	anim.colormask = WHITE;
 	anim.upf = upf;
+	anim.drawTiled = false;
+	anim.tileScale = 1.0f;
 	return anim;
 }
 
-void animation_DrawFrame(Animation anim, int frameIndex, Vector2 position, Color color){
+void animation_DrawFrame(Animation anim, int frameIndex, Vector2 position){
 	anim.frame.x = (anim.startFrame + frameIndex) * anim.frameWidth;
-	DrawTextureRec(anim.texture, anim.frame, position, color);
+	// DrawTextureRec(anim.texture, anim.frame, position, color);
+	Rectangle destination = {position.x, position.y, anim.renderSize.x, anim.renderSize.y};
+	if(anim.drawTiled){
+		DrawTextureTiled(anim.texture, anim.frame, destination, (Vector2){0,0}, 0.0f, anim.tileScale, anim.colormask);
+	} else {
+		DrawTexturePro(anim.texture, anim.frame, destination, (Vector2){0,0}, 0.0f, anim.colormask);
+	}
 }
 
-void animation_DrawUpdate(Animation anim, Vector2 position, Color color, int * pUpdates){
-	// Update frames both on local stack and on outer stack
-	(*pUpdates) += 1;
-	int updates = (*pUpdates);
+void animation_DrawUpdate(Animation * anim, Vector2 position){
+	// Update frames
+	anim->updates += 1;
 	// Check where this lands us
-	int targetFrame = updates / anim.upf;
-	if(targetFrame >= anim.numFrames){
+	int targetFrame = anim->updates / anim->upf;
+	if(targetFrame >= anim->numFrames){
 		// Go back to beginning - LOOP
 		// TODO : Differentiate between loop and other behaviour?
-		(*pUpdates) = 0;
-		animation_DrawFrame(anim, 0, position, color);
+		anim->updates = 0;
+		animation_DrawFrame(*anim, 0, position);
 	} else {
 		// Draw required frame
-		animation_DrawFrame(anim, targetFrame, position, color);
+		animation_DrawFrame(*anim, targetFrame, position);
 	}
 }

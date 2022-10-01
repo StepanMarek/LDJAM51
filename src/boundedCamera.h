@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include "collisions.h"
-
+#ifndef GAME_BOUNDEDCAMERA
+#define GAME_BOUNDEDCAMERA
 typedef struct {
 	Camera2D camera;
 	Rectangle leftBound;
@@ -11,3 +12,4 @@ typedef struct {
 // target is no longer within the bound. But, only do so if the left bound
 // itself does not get pushed out of limits (set by level dimensions)
 void boundedCamera_updateCamera(BoundedCamera * camera, Rectangle target, float leftLimit, float rightLimit);
+#endif
