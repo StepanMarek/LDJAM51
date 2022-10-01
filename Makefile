@@ -1,5 +1,6 @@
 ASSETS=res
-SOURCE=src/main.c src/game.c src/animation.c
+SOURCE=src/main.c src/game.c src/animation.c src/collisions.c
+HEADERS=src/game.h src/animation.h
 LIBS=src/libraylib.a
 EMCC_FLAGS=-s USE_GLFW=3
 
@@ -13,7 +14,7 @@ all: main.js
 run: all
 	./server.sh
 
-main.js: $(SOURCE) $(LIBS) $(ASSETS)/*
+main.js: $(SOURCE) $(LIBS) $(ASSETS)/* $(HEADERS)
 	emcc -I$(RAYLIB_LOCATION) $(EMCC_FLAGS) $(LIBS) $(SOURCE) -o $@ --preload-file $(ASSETS)
 
 src/libraylib.a: $(LOCATED_RAYLIB_OBJECTS)

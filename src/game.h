@@ -1,7 +1,7 @@
 #include "raylib.h"
 #include "animation.h"
 
-typedef enum GameStates {
+typedef enum {
 	PRELUDE,
 	MENU,
 	LEVEL_PRELUDE,
@@ -10,7 +10,7 @@ typedef enum GameStates {
 	REQUIEM
 } GameState;
 
-typedef struct Games {
+typedef struct {
 	GameState state;
 	int textureNum;
 	// Expect these on stack

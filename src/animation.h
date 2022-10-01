@@ -2,7 +2,7 @@
 // Frames in the animations texture are stored HORIZONTALLY,
 // i.e. frame 2 for frameWidth 10 and frame height 30 will be
 // looked for at Rectangle{20,0,10,30}
-typedef struct Animations {
+typedef struct {
 	int numFrames;
 	int frameWidth;
 	int frameHeight;
