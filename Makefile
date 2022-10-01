@@ -1,6 +1,6 @@
 ASSETS=res
-SOURCE=src/main.c src/game.c src/animation.c src/collisions.c
-HEADERS=src/game.h src/animation.h
+SOURCE=src/main.c src/game.c src/animation.c src/collisions.c src/boundedCamera.c
+HEADERS=src/game.h src/animation.h src/collisions.h src/boundedCamera.h
 LIBS=src/libraylib.a
 EMCC_FLAGS=-s USE_GLFW=3
 

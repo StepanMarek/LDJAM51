@@ -64,8 +64,7 @@ bool getCollisionSingleOffset(Rectangle * rect1, Rectangle * rect2, Vector2 * of
 			direction = -1;
 		}
 		offset->x = 0.0;
-		// TODO : Decide whether moving additional pixel is necessary or not?
-		offset->y = direction * (collRect.height/2);
+		offset->y = direction * collRect.height;
 		return false;
 	} else {
 		// Move in width/x
@@ -74,7 +73,7 @@ bool getCollisionSingleOffset(Rectangle * rect1, Rectangle * rect2, Vector2 * of
 			direction = -1;
 		}
 		offset->y = 0.0;
-		offset->x = direction * (collRect.width/2);
+		offset->x = direction * collRect.width;
 		return true;
 	}
 }
@@ -129,5 +128,16 @@ void handleCollision(Rectangle * rect1, Rectangle * rect2, Vector2 * vel1, Vecto
 			vel1->y = 0.0;
 			vel2->y = 0.0;
 		}
+	}
+}
+
+float getCollisionSingleXOffset(Rectangle rect1, Rectangle rect2){
+	// Returns the overlap in x direction of the two rectangles
+	// Positive sign means that rect1 has larger x than rect2, negative means the other is true
+	Rectangle collRect = GetCollisionRec(rect1, rect2);
+	if(rect1.x > rect2.x){
+		return collRect.width;
+	} else {
+		return -collRect.width;
 	}
 }
