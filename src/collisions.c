@@ -1,5 +1,6 @@
 #include "raylib.h"
 #include "math.h"
+
 // Start with the more general function for two moving objects colliding
 // In this case, they both move to restore non-colliding state
 // Returns whether the offset occurs in the x direction
@@ -133,11 +134,20 @@ void handleCollision(Rectangle * rect1, Rectangle * rect2, Vector2 * vel1, Vecto
 
 float getCollisionSingleXOffset(Rectangle rect1, Rectangle rect2){
 	// Returns the overlap in x direction of the two rectangles
-	// Positive sign means that rect1 has larger x than rect2, negative means the other is true
 	Rectangle collRect = GetCollisionRec(rect1, rect2);
-	if(rect1.x > rect2.x){
-		return collRect.width;
+	return collRect.width;
+}
+
+void handleSingleXCollision(Rectangle * rect1, Rectangle rect2){
+	// Get the offset
+	float offsetX = getCollisionSingleXOffset(*rect1, rect2);
+	printf("Offset : %f\n", offsetX);
+	// Depending on direction, move the movable rectangle
+	if(rect2.x > rect1->x){
+		// Collision from the left, move back left
+		rect1->x -= offsetX;
 	} else {
-		return -collRect.width;
+		// Collision from the right, move back right
+		rect1->x += offsetX;
 	}
 }

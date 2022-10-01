@@ -8,7 +8,7 @@ Animation animation_CreateAnimation(Texture2D texture, int frames, int width, in
 	anim.frameHeight = height;
 	anim.startFrame = start;
 	anim.frame = (Rectangle){start * width, 0, width, height};
-	anim.renderSize = (Vector2){renderWidth, renderHeight};
+	anim.destination = (Rectangle){0, 0, renderWidth, renderHeight};
 	anim.texture = texture;
 	anim.updates = 0;
 	anim.colormask = WHITE;
@@ -19,13 +19,15 @@ Animation animation_CreateAnimation(Texture2D texture, int frames, int width, in
 }
 
 void animation_DrawFrame(Animation anim, int frameIndex, Vector2 position){
+	// Find the correct frame
 	anim.frame.x = (anim.startFrame + frameIndex) * anim.frameWidth;
-	// DrawTextureRec(anim.texture, anim.frame, position, color);
-	Rectangle destination = {position.x, position.y, anim.renderSize.x, anim.renderSize.y};
+	// Translate to destination
+	anim.destination.x = position.x;
+	anim.destination.y = position.y;
 	if(anim.drawTiled){
-		DrawTextureTiled(anim.texture, anim.frame, destination, (Vector2){0,0}, 0.0f, anim.tileScale, anim.colormask);
+		DrawTextureTiled(anim.texture, anim.frame, anim.destination, (Vector2){0,0}, 0.0f, anim.tileScale, anim.colormask);
 	} else {
-		DrawTexturePro(anim.texture, anim.frame, destination, (Vector2){0,0}, 0.0f, anim.colormask);
+		DrawTexturePro(anim.texture, anim.frame, anim.destination, (Vector2){0,0}, 0.0f, anim.colormask);
 	}
 }
 

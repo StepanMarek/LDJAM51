@@ -12,11 +12,13 @@ void boundedCamera_updateCamera(BoundedCamera * camera, Rectangle target, float 
 	// Check collision left
 	if(CheckCollisionRecs(targetOnScreen(camera, target), camera->leftBound)){
 		offsetX = getCollisionSingleXOffset(camera->leftBound, targetOnScreen(camera, target));
+		// Move the camera to the left by offset
+		camera->camera.target.x -= offsetX;
 	} else if(CheckCollisionRecs(targetOnScreen(camera, target), camera->rightBound)) {
 		offsetX = getCollisionSingleXOffset(camera->rightBound, targetOnScreen(camera, target));
+		// Move the camera to the right by offset
+		camera->camera.target.x += offsetX;
 	}
-	// Move the camera to the left by offset
-	camera->camera.target.x += offsetX;
 	// Now, if we moved out of bounds, imediately move back
 	if(camera->camera.target.x < leftLimit){
 		camera->camera.target.x = leftLimit;

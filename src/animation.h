@@ -12,7 +12,7 @@ typedef struct {
 	int startFrame;
 	Rectangle frame;
 	Texture2D texture;
-	Vector2 renderSize;
+	Rectangle destination;
 	Color colormask;
 	// Index that keeps track of how many render functions were called
 	int updates;
