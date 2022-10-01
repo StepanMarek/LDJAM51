@@ -2,3 +2,4 @@ main.data
 main.wasm
 main.js
 src/libraylib.a
+*.swp

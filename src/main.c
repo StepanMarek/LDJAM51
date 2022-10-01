@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include <emscripten/emscripten.h>
 #include <stdio.h>
+#include "game.h"
 
 struct toDraw {
 	Texture2D texture;
@@ -12,6 +13,10 @@ int frameCount = 0;
 int frameIndex = 0;
 Rectangle targetFrame = {0, 0, 50, 100};
 Vector2 position = {20, 60};
+
+Game game;
+game.textureNum = 1;
+game.textureNames = {"res/trial_anim.png"};
 
 void UpdateFrame(){
 	BeginDrawing();
@@ -32,6 +37,8 @@ void UpdateFrame(){
 
 int main(){
 	InitWindow(800,600, "simple example");
+
+	printf("Game output : %s\n", game.textureNames[0]);
 
 	// Load image as texture
 	drawing.texture = LoadTexture("res/trial_anim.png");
