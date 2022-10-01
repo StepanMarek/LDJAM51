@@ -1,4 +1,5 @@
 #include "raylib.h"
+#include "animation.h"
 
 typedef enum GameStates {
 	PRELUDE,
@@ -15,6 +16,7 @@ typedef struct Games {
 	// Expect these on stack
 	const char ** textureNames;
 	Texture2D * textures;
+	Animation * animations;
 } Game;
 
 void game_loadTextures(const char ** textureNames, int textureNum, Texture2D * textures);

@@ -1,5 +1,5 @@
 ASSETS=res
-SOURCE=src/main.c src/game.c
+SOURCE=src/main.c src/game.c src/animation.c
 LIBS=src/libraylib.a
 EMCC_FLAGS=-s USE_GLFW=3
 
