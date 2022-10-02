@@ -41,12 +41,25 @@ void UpdateFrame(){
 		}
 		if(IsKeyPressed(KEY_W) && game.currentLevel.collidingVels[game.currentLevel.playerCollIndex].y == 0.0f){
 			// Jump
-			game.currentLevel.collidingVels[game.currentLevel.playerCollIndex].y = -10.0f;
+			game.currentLevel.collidingVels[game.currentLevel.playerCollIndex].y = -12.0f;
 		}
 		// Acceleration due to gravity
-		game.currentLevel.collidingVels[game.currentLevel.playerCollIndex].y += 0.5f;
-		game.currentLevel.collidingRects[game.currentLevel.playerCollIndex].x += game.currentLevel.collidingVels[game.currentLevel.playerCollIndex].x;
-		game.currentLevel.collidingRects[game.currentLevel.playerCollIndex].y += game.currentLevel.collidingVels[game.currentLevel.playerCollIndex].y;
+		for(int i = 0; i < game.currentLevel.collNum; i++){
+			if(game.currentLevel.moveable[i]){
+				game.currentLevel.collidingVels[i].y += 0.5f;
+			}
+			// Then update positions
+			game.currentLevel.collidingRects[i].x += game.currentLevel.collidingVels[i].x;
+			game.currentLevel.collidingRects[i].y += game.currentLevel.collidingVels[i].y;
+		}
+		// Then, update enemy velocity in x towards player
+		for(int i = 0; i < game.currentLevel.enemiesNum; i++){
+			if(game.currentLevel.collidingRects[game.currentLevel.enemies[i]].x < game.currentLevel.collidingRects[game.currentLevel.playerCollIndex].x){
+				game.currentLevel.collidingVels[game.currentLevel.enemies[i]].x = 2.0f;
+			} else {
+				game.currentLevel.collidingVels[game.currentLevel.enemies[i]].x = -2.0f;
+			}
+		}
 		level_handleBoundsCollisions(&game.currentLevel);
 		level_handleCollisions(&game.currentLevel);
 		level_updateAnimPositions(&game.currentLevel);
@@ -88,13 +101,14 @@ int main(){
 
 	GameState state = PRELUDE;
 	// ================= CREATE TEXTURES =================
-	const int TEXTURE_NUM = 3;
+	const int TEXTURE_NUM = 4;
 	const char * textureNames[TEXTURE_NUM];
 	game.textureNames = textureNames;
 	// Follows loading of textures
 	textureNames[0] = "res/trial_anim.png";
 	textureNames[1] = "res/platform.png";
 	textureNames[2] = "res/player.png";
+	textureNames[3] = "res/enemy.png";
 	// Create texture pointers on stack
 	Texture2D textures[TEXTURE_NUM];
 	game.textures = textures;

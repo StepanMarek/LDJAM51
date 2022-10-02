@@ -45,6 +45,23 @@ void level_handleCollisions(Level * level){
 			if(CheckCollisionRecs(level->collidingRects[i], level->collidingRects[j])){
 				// Proceeed to handling the collision
 				handleCollision(&(level->collidingRects[i]), &(level->collidingRects[j]), &(level->collidingVels[i]), &(level->collidingVels[j]), level->moveable[i], level->moveable[j]);
+				// TODO : If this is player and enemy pair, player takes damage
+				if(i == level->playerCollIndex && j != level->playerCollIndex){
+					// Check whether the other is enemy
+					bool isLiveEnemy = false;
+					for(int k = 0; k < level->enemiesNum; k++){
+						if(level->enemies[k] == j){
+							// Should only occur for one enemy
+							isLiveEnemy = level->enemiesAlive[k];
+							break;
+						}
+					}
+					if(isLiveEnemy){
+						// Deal damage
+						level_takeDamageFromEnemies(level);
+						printf("Health : %i\n", level->playerHealth);
+					}
+				}
 			}
 		}
 	}
@@ -79,6 +96,10 @@ void level_progressPrelude(Level * level){
 	}
 }
 
+void level_takeDamageFromEnemies(Level * level){
+	level->playerHealth -= 1;
+}
+
 void level_free(Level level){
 	// Free the array of animations
 	free(level.animations);
@@ -102,8 +123,11 @@ void level_free(Level level){
 	for(int i=0; i < level.playNum; i++){
 		gui_free(level.playGuis[i]);
 	}
+	// Clear arrays for damage taking
+	free(level.enemies);
+	free(level.enemiesAlive);
 }
-Level level_alloc(int animNum, int collNum, int preludeNum, int playNum, int guiTextNum, int guiAnimNum){
+Level level_alloc(int animNum, int collNum, int preludeNum, int playNum, int guiTextNum, int guiAnimNum, int numOfEnemies){
 	Level level;
 	level.animations = (Animation *) malloc(sizeof(Animation) * animNum);
 	level.animPositions = (Vector2 *) malloc(sizeof(Vector2) * animNum);
@@ -121,11 +145,21 @@ Level level_alloc(int animNum, int collNum, int preludeNum, int playNum, int gui
 	level.gui = gui_alloc(guiTextNum, guiAnimNum);
 	level.preludeGuis = (GuiManager *) malloc(sizeof(GuiManager) * preludeNum);
 	level.playGuis = (GuiManager *) malloc(sizeof(GuiManager) * playNum);
+	// Create arrays for damage taking
+	level.enemies = (int *) malloc(sizeof(int) * numOfEnemies);
+	level.enemiesAlive = (bool *) malloc(sizeof(int) * numOfEnemies);
+	// Defaultly, all enemies are alive
+	for(int i = 0; i < numOfEnemies; i++){
+		level.enemiesAlive[i] = true;
+	}
+	// Let the player start with 200 health by default
+	level.playerHealth = 200;
 	// Write known values
 	level.animNum = animNum;
 	level.collNum = collNum;
 	level.preludeNum = preludeNum;
 	level.playNum = playNum;
+	level.enemiesNum = numOfEnemies;
 	return level;
 
 }

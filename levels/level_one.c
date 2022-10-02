@@ -6,7 +6,8 @@
 #include <stdio.h>
 
 Level level_one(Game game){
-	Level level = level_alloc(2, 2, 0, 0, 1, 1);
+	// Level level_alloc(int animNum, int collNum, int preludeNum, int playNum, int guiTextNum, int guiAnimNum);
+	Level level = level_alloc(3, 3, 0, 0, 0, 0, 1);
 	
 	// Player
 	level.animations[0] = animation_CreateAnimation(game.textures[2], 1, 50, 100, 0, 50, 50, 100);
@@ -31,16 +32,20 @@ Level level_one(Game game){
 	level.collAnimMap.keys[1] = 1;
 	level.collAnimMap.vals[1] = 1;
 
+	// Enemy
+	level.animations[2] = animation_CreateAnimation(game.textures[3], 1, 50, 100, 0, 50, 50, 100);
+	level.animPositions[2] = (Vector2){200,50};
+	level.collidingRects[2] = (Rectangle){200,50,50,100};
+	level.moveable[2] = true;
+	level.collidingVels[2] = (Vector2){0,0};
+	level.collAnimMap.keys[2] = 2;
+	level.collAnimMap.vals[2] = 2;
+	level.enemies[0] = 2;
+
 	// Define level bounds
 	level.leftBound = (Rectangle){-350,0,50, 600};
 	level.rightBound = (Rectangle){900,0,50,600};
 	level.boundOverextension = 10.0f;
-
-	// GUI setup
-	gui_constructText(&(level.gui), game.texts[0], 0);
-	level.gui.textPositions[0].x = 100.0;
-	level.gui.animPositions[0] = (Vector2){300,200};
-	gui_constructAnimationStatic(&(level.gui), 0, game.textures[0], 50, 100, 1, 200, 400);
 
 	// Define preludes, requiems etc.
 	level.preludeDone = true;

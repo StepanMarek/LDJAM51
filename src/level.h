@@ -24,7 +24,12 @@ typedef struct {
 	bool * moveable;
 	int collNum;
 	IntIntMap collAnimMap;
+	// Collisions and damage taking
 	int playerCollIndex;
+	int * enemies;
+	bool * enemiesAlive;
+	int enemiesNum;
+	int playerHealth;
 	GuiManager gui;
 	// This is the gui that is displayed during play
 	bool preludeDone;
@@ -45,5 +50,6 @@ void level_handleCollisions(Level * level);
 void level_updateAnimPositions(Level * level);
 void level_progressPrelude(Level * level);
 void level_free(Level level);
-Level level_alloc(int animNum, int collNum, int preludeNum, int playNum, int guiTextNum, int guiAnimNum);
+Level level_alloc(int animNum, int collNum, int preludeNum, int playNum, int guiTextNum, int guiAnimNum, int enemiesNum);
+void level_takeDamageFromEnemies(Level * level);
 #endif
