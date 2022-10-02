@@ -7,7 +7,7 @@
 
 Level level_one(Game game){
 	// Level level_alloc(int animNum, int collNum, int preludeNum, int playNum, int guiTextNum, int guiAnimNum, int enemies, int shields);
-	Level level = level_alloc(5, 4, 0, 0, 0, 0, 1, 1);
+	Level level = level_alloc(6, 5, 0, 0, 0, 1, 1, 2);
 	
 	// Player
 	level.animations[0] = animation_CreateAnimation(game.textures[2], 1, 50, 100, 0, 50, 50, 100);
@@ -62,6 +62,22 @@ Level level_one(Game game){
 	level.collAnimMap.keys[3] = 3;
 	level.collAnimMap.vals[3] = 4;
 	level.shieldingPlatforms[0] = 3;
+	
+	// Shielding platform
+	level.animations[5] = animation_CreateAnimation(game.textures[1], 1, 40, 30, 0, 50, 160,60);
+	level.animations[5].drawTiled = true;
+	level.animations[5].tileScale = 2;
+	level.animPositions[5] = (Vector2) {50,450};
+	level.collidingRects[4] = (Rectangle){50,450,160,40};
+	level.moveable[4] = false;
+	level.collidingVels[4] = (Vector2){0,0};
+	level.collAnimMap.keys[4] = 4;
+	level.collAnimMap.vals[4] = 5;
+	level.shieldingPlatforms[1] = 4;
+
+	// GUI
+	level.gui.animations[0] = animation_CreateAnimation(game.textures[5], 8, 40, 40, 0, 100, 80, 80);
+	level.gui.animPositions[0] = (Vector2) {700,20};
 
 	// Define level bounds
 	level.leftBound = (Rectangle){-350,0,50, 600};
