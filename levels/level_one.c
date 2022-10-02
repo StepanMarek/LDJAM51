@@ -7,7 +7,7 @@
 
 Level level_one(Game game){
 	// Level level_alloc(int animNum, int collNum, int preludeNum, int playNum, int guiTextNum, int guiAnimNum, int enemies, int shields);
-	Level level = level_alloc(6, 5, 0, 0, 0, 2, 1, 2);
+	Level level = level_alloc(7, 5, 0, 0, 0, 2, 1, 2);
 	
 	// Player
 	level.animations[0] = animation_CreateAnimation(game.textures[2], 4, 50, 100, 0, 20, 50, 100);
@@ -74,6 +74,12 @@ Level level_one(Game game){
 	level.collAnimMap.keys[4] = 4;
 	level.collAnimMap.vals[4] = 5;
 	level.shieldingPlatforms[1] = 4;
+	
+	// Door
+	level.animations[6] = animation_CreateAnimation(game.textures[7], 1, 50, 100, 0, 50, 50, 100);
+	level.animPositions[6].x = 850.0f;
+	level.animPositions[6].y = 460.0f;
+	level.doorAnimIndex = 6;
 
 	// GUI
 	level.gui.animations[0] = animation_CreateAnimation(game.textures[5], 8, 40, 40, 0, 100, 80, 80);

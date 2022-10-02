@@ -86,6 +86,7 @@ void UpdateFrame(){
 		// Update flare
 		level_updateFlare(&game.currentLevel);
 		level_updateHealth(&game.currentLevel);
+		level_checkDoor(&game.currentLevel);
 		if(game.currentLevel.playDone){
 			game.state = LEVEL_REQUIEM;
 			return;
@@ -138,12 +139,13 @@ int main(){
 	Texture2D textures[TEXTURE_NUM];
 	game.textures = textures;
 	game_loadTextures(game.textureNames, TEXTURE_NUM, game.textures);
-	const char * gameTexts[3];
+	const char * gameTexts[4];
 	game.texts = gameTexts;
 	game.texts[0] = "Text in global context";
-	game.texts[1] = "Pres SPACE to start.";
-	game.texts[2] = "First colony established around a pulsar star ...";
-	game.textNum = 1;
+	game.texts[1] = "Pulsar is flaring every 10 seconds";
+	game.texts[2] = "Virus spreads - can you get rid of the infected and reach the door?";
+	game.texts[3] = "Unfortunately that is it, 48h is not much ...";
+	game.textNum = 4;
 	// ================= CREATE LEVEL ZERO =================
 	Level level_start = level_zero(game);
 	// ================= CREATE LEVEL ======================
@@ -179,11 +181,12 @@ int main(){
 	// Set up current and next level
 	game.currentLevel = level_start;
 	game.nextLevel = level;
-	Level gameLevels[2];
+	Level gameLevels[3];
 	gameLevels[0] = level_start;
 	gameLevels[1] = level;
+	gameLevels[2] = level_final(game);
 	game.levels = gameLevels;
-	game.levelNum = 2;
+	game.levelNum = 3;
 	game.levelIndex = 0;
 
 	game.state = LEVEL_PRELUDE;

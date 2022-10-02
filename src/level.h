@@ -51,6 +51,7 @@ typedef struct {
 	int playNum;
 	GuiManager * playGuis;
 	int guiHealth;
+	int doorAnimIndex;
 } Level;
 
 int level_map(Level level, int key);
@@ -65,4 +66,5 @@ Level level_alloc(int animNum, int collNum, int preludeNum, int playNum, int gui
 void level_takeDamageFromEnemies(Level * level);
 void level_updateFlare(Level * level);
 void level_updateHealth(Level * level);
+void level_checkDoor(Level * level);
 #endif

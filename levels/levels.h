@@ -4,4 +4,5 @@
 #define GAME_LEVELS
 Level level_zero(Game game);
 Level level_one(Game game);
+Level level_final(Game game);
 #endif

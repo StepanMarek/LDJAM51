@@ -174,6 +174,31 @@ void level_updateHealth(Level * level){
 	level->gui.animations[level->guiHealth].destination.height = level->playerHealth / 2;
 }
 
+void level_checkDoor(Level * level){
+	// Check enemies
+	bool allDead = true;
+	for(int i = 0; i < level->enemiesNum; i++){
+		if(level->enemiesAlive[i]){
+			allDead = false;
+			break;
+		}
+	}
+	if(!allDead) return;
+	if(allDead){
+		// Update texture
+		level->animations[level->doorAnimIndex].startFrame = 1;
+	}
+	Rectangle dest;
+	dest.x = level->animPositions[level->doorAnimIndex].x;
+	dest.y = level->animPositions[level->doorAnimIndex].y;
+	dest.width = level->animations[level->doorAnimIndex].destination.width;
+	dest.height = level->animations[level->doorAnimIndex].destination.height;
+	if(CheckCollisionRecs(level->collidingRects[level->playerCollIndex], dest)){
+		// Win
+		level->playDone = true;
+	}
+}
+
 void level_free(Level level){
 	// Free the array of animations
 	free(level.animations);
