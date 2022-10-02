@@ -105,7 +105,7 @@ int main(){
 
 	GameState state = PRELUDE;
 	// ================= CREATE TEXTURES =================
-	const int TEXTURE_NUM = 4;
+	const int TEXTURE_NUM = 5;
 	const char * textureNames[TEXTURE_NUM];
 	game.textureNames = textureNames;
 	// Follows loading of textures
@@ -113,6 +113,7 @@ int main(){
 	textureNames[1] = "res/platform.png";
 	textureNames[2] = "res/player.png";
 	textureNames[3] = "res/enemy.png";
+	textureNames[4] = "res/flare.png";
 	// Create texture pointers on stack
 	Texture2D textures[TEXTURE_NUM];
 	game.textures = textures;
@@ -127,48 +128,6 @@ int main(){
 	Level level_start = level_zero(game);
 	// ================= CREATE LEVEL ======================
 	Level level = level_one(game);
-	// Level level;
-	// Animation animations_one[2];
-	// level.animations = animations_one;
-	// animations_one[0] = animation_CreateAnimation(game.textures[0], 2, 50, 100, 0, 50, 50, 100);
-	// animations_one[1] = animation_CreateAnimation(game.textures[1], 1, 40, 20, 0, 50, 1200, 40);
-	// animations_one[1].drawTiled = true;
-	// animations_one[1].tileScale = 2.0f;
-	// level.animNum = 2;
-	// Vector2 positions_one[2];
-	// level.animPositions = positions_one;
-	// positions_one[0] = (Vector2) {0, 0};
-	// positions_one[1] = (Vector2) {-300, 300};
-	// level.playerAnimIndex = 0;
-	// level.playerVelocity = (Vector2) {0,0};
-	// level.leftBound = (Rectangle){-350,0,50, 600};
-	// level.rightBound = (Rectangle){900,0,50,600};
-	// level.boundOverextension = 10.0f;
-	// Rectangle collRects[2];
-	// level.collidingRects = collRects;
-	// level.collidingRects[0] = (Rectangle){0, 0, 50, 100};
-	// level.collidingRects[1] = (Rectangle){-300,300,1200,40};
-	// bool moveable[2];
-	// level.moveable = moveable;
-	// level.moveable[0] = true;
-	// level.moveable[1] = false;
-	// Vector2 velocities_one[2];
-	// level.collidingVels = velocities_one;
-	// level.collidingVels[0] = (Vector2){0,0};
-	// level.collidingVels[1] = (Vector2){0,0};
-	// level.collNum = 2;
-	// level.playerCollIndex = 0;
-	// int levelMapKeys[2];
-	// int levelMapVals[2];
-	// level.collAnimMap.keys = levelMapKeys;
-	// level.collAnimMap.vals = levelMapVals;
-	// level.collAnimMap.keys[0] = 0;
-	// level.collAnimMap.keys[1] = 1;
-	// level.collAnimMap.vals[0] = 0;
-	// level.collAnimMap.vals[1] = 1;
-	// level.preludeDone = true;
-	// level.playDone = false;
-	// level.requiemDone = false;
 	// ================= CAMERA SETUP ======================
 	camera.camera.target = (Vector2){-200, 0};
 	camera.camera.offset = (Vector2){0, 0};

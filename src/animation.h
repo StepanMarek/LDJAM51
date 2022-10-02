@@ -26,5 +26,5 @@ typedef struct {
 Animation animation_CreateAnimation(Texture2D texture, int numFrames, int frameWidth, int frameHeight, int startFrame, int upf, float renderWidth, float renderHeight);
 
 void animation_DrawFrame(Animation anim, int frameIndex, Vector2 position);
-void animation_DrawUpdate(Animation * anim, Vector2 position);
+void animation_DrawUpdate(Animation * anim, Vector2 position, bool debug);
 #endif

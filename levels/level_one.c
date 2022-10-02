@@ -7,7 +7,7 @@
 
 Level level_one(Game game){
 	// Level level_alloc(int animNum, int collNum, int preludeNum, int playNum, int guiTextNum, int guiAnimNum);
-	Level level = level_alloc(3, 3, 0, 0, 0, 0, 1);
+	Level level = level_alloc(4, 3, 0, 0, 0, 0, 1);
 	
 	// Player
 	level.animations[0] = animation_CreateAnimation(game.textures[2], 1, 50, 100, 0, 50, 50, 100);
@@ -41,6 +41,13 @@ Level level_one(Game game){
 	level.collAnimMap.keys[2] = 2;
 	level.collAnimMap.vals[2] = 2;
 	level.enemies[0] = 2;
+
+	// Flare
+	level.animations[3] = animation_CreateAnimation(game.textures[4], 5, 800, 100, 0, 20, 1250, 100);
+	level.animations[3].drawTiled = true;
+	level.animations[3].tileScale = 1.0f;
+	level.animPositions[3].x = -350.0f;
+	level.animPositions[3].y = 0.0f;
 
 	// Define level bounds
 	level.leftBound = (Rectangle){-350,0,50, 600};
