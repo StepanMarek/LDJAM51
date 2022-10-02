@@ -2,7 +2,7 @@ ASSETS=res
 SOURCE=src/main.c src/game.c src/animation.c src/collisions.c src/boundedCamera.c src/level.c src/gui.c
 HEADERS=src/game.h src/animation.h src/collisions.h src/boundedCamera.h src/level.h src/gui.h levels/levels.h
 LEVELS_LOCATION=levels
-LEVELS=$(addprefix $(LEVELS_LOCATION)/, level_one.c)
+LEVELS=$(addprefix $(LEVELS_LOCATION)/, level_zero.c level_one.c)
 
 LIBS=src/libraylib.a
 EMCC_FLAGS=-s USE_GLFW=3

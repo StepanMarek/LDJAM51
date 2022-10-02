@@ -5,15 +5,8 @@
 #include <stdlib.h>
 
 void gui_renderTexts(GuiManager * gui, bool debug){
-	if(debug) printf("Hello?\n");
 	for(int i = 0; i < gui->textNum; i++){
-		if(debug){
-			printf("Printing index %i\n", i);
-			printf("Printing textPos.x %f\n", gui->textPositions[i].x);
-			printf("%s\n", gui->texts[i]);
-		}
 		DrawText(gui->texts[i], gui->textPositions[i].x, gui->textPositions[i].y, gui->textSizes[i], gui->textColors[i]);
-		if(debug) printf("Hello? again\n");
 	}
 }
 
@@ -31,10 +24,6 @@ void gui_constructText(GuiManager * gui, const char * text, int textIndex){
 }
 
 void gui_renderAnimations(GuiManager * gui, bool debug){
-	if(debug){
-		// We are in level 1
-		printf("anim upf %i\n", gui->animNum);
-	}
 	for(int i = 0; i < gui->animNum; i++){
 		animation_DrawUpdate(&(gui->animations[i]), gui->animPositions[i]);
 	}	
@@ -74,4 +63,9 @@ GuiManager gui_alloc(int textNum, int animNum){
 	gui.textNum = textNum;
 	gui.animNum = animNum;
 	return gui;
+}
+
+void gui_centerText(GuiManager * gui, int textIndex){
+	int textWidth = MeasureText(gui->texts[textIndex], gui->textSizes[textIndex]);
+	gui->textPositions[textIndex].x -= textWidth/2;
 }

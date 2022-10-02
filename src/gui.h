@@ -28,4 +28,6 @@ void gui_constructAnimationStatic(GuiManager * gui, int animIndex, Texture2D tex
 void gui_free(GuiManager gui);
 
 GuiManager gui_alloc(int textNum, int animNum);
+
+void gui_centerText(GuiManager * gui, int textIndex);
 #endif

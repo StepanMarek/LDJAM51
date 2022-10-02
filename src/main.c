@@ -72,8 +72,8 @@ void UpdateFrame(){
 		// DrawRectangleRec(camera.leftBound, BLUE);
 		// DrawRectangleRec(camera.rightBound, BLUE);
 		// Draw GUI
-		gui_renderTexts(&(game.currentLevel.gui), game.levelIndex == 1);
-		gui_renderAnimations(&(game.currentLevel.gui), game.levelIndex == 1);
+		gui_renderTexts(&(game.currentLevel.gui), false);
+		gui_renderAnimations(&(game.currentLevel.gui), false);
 		BeginMode2D(camera.camera);
 			// Draw level bounds
 			// DrawRectangleRec(game.currentLevel.leftBound, RED);
@@ -98,55 +98,14 @@ int main(){
 	Texture2D textures[TEXTURE_NUM];
 	game.textures = textures;
 	game_loadTextures(game.textureNames, TEXTURE_NUM, game.textures);
-	const char * gameTexts[1];
+	const char * gameTexts[3];
 	game.texts = gameTexts;
 	game.texts[0] = "Text in global context";
+	game.texts[1] = "Pres SPACE to start.";
+	game.texts[2] = "First colony established around a pulsar star ...";
 	game.textNum = 1;
-	// ================= CREATE ZERO LEVEL =================
-	Level level_zero;
-	level_zero.animNum = 0;
-	level_zero.collNum = 0;
-	GuiManager level_zero_gui;
-	level_zero_gui.textNum = 1;
-	level_zero_gui.animNum = 0;
-	const char * textsZero[1];
-	level_zero_gui.texts = textsZero;
-	Vector2 textPositionsZero[1];
-	level_zero_gui.textPositions = textPositionsZero;
-	Color textColorsZero[1];
-	level_zero_gui.textColors = textColorsZero;
-	int textSizesZero[1];
-	level_zero_gui.textSizes = textSizesZero;
-	gui_constructText(&level_zero_gui, "To continue. press SPACE.", 0);
-	level_zero_gui.textPositions[0].x = 300;
-	level_zero_gui.textPositions[0].y = 300;
-	// ====
-	GuiManager level_zero_gui2;
-	level_zero_gui2.textNum = 1;
-	level_zero_gui2.animNum = 0;
-	const char * textsZero2[1];
-	level_zero_gui2.texts = textsZero2;
-	Vector2 textPositionsZero2[1];
-	level_zero_gui2.textPositions = textPositionsZero2;
-	Color textColorsZero2[1];
-	level_zero_gui2.textColors = textColorsZero2;
-	int textSizesZero2[1];
-	level_zero_gui2.textSizes = textSizesZero2;
-	gui_constructText(&level_zero_gui2, "The story begins ...", 0);
-	level_zero_gui2.textPositions[0].x = 300;
-	level_zero_gui2.textPositions[0].y = 300;
-	// ====
-	level_zero.gui = level_zero_gui;
-	level_zero.preludeNum = 2;
-	level_zero.playNum = 0;
-	level_zero.preludeIndex = 0;
-	GuiManager preludeGuis[2];
-	preludeGuis[0] = level_zero_gui;
-	preludeGuis[1] = level_zero_gui2;
-	level_zero.preludeGuis = preludeGuis;
-	level_zero.preludeDone = false;
-	level_zero.playDone = true;
-	level_zero.requiemDone = false;
+	// ================= CREATE LEVEL ZERO =================
+	Level level_start = level_zero(game);
 	// ================= CREATE LEVEL ======================
 	Level level = level_one(game);
 	// Level level;
@@ -220,10 +179,10 @@ int main(){
 	// level.gui = &gui;
 
 	// Set up current and next level
-	game.currentLevel = level_zero;
+	game.currentLevel = level_start;
 	game.nextLevel = level;
 	Level gameLevels[2];
-	gameLevels[0] = level_zero;
+	gameLevels[0] = level_start;
 	gameLevels[1] = level;
 	game.levels = gameLevels;
 	game.levelNum = 2;
@@ -235,6 +194,7 @@ int main(){
 
 	// Unload
 	level_free(level);
+	level_free(level_start);
 	game_unloadTextures(game.textures, TEXTURE_NUM);
 
 	CloseWindow();

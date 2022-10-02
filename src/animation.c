@@ -1,6 +1,5 @@
 #include "raylib.h"
 #include "animation.h"
-#include <stdio.h>
 
 Animation animation_CreateAnimation(Texture2D texture, int frames, int width, int height, int start, int upf, float renderWidth, float renderHeight){
 	Animation anim;
@@ -34,7 +33,6 @@ void animation_DrawFrame(Animation anim, int frameIndex, Vector2 position){
 
 void animation_DrawUpdate(Animation * anim, Vector2 position){
 	// Update frames
-	printf("Rendering animation upf %i\n", anim->upf);
 	anim->updates += 1;
 	// Check where this lands us
 	int targetFrame = anim->updates / anim->upf;
