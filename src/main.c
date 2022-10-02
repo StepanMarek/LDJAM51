@@ -75,7 +75,7 @@ void UpdateFrame(){
 		boundedCamera_updateCamera(&camera, game.currentLevel.collidingRects[game.currentLevel.playerCollIndex], game.currentLevel.leftBound.x+game.currentLevel.leftBound.width-game.currentLevel.boundOverextension,game.currentLevel.rightBound.x+game.currentLevel.boundOverextension);
 		// Update flare
 		level_updateFlare(&game.currentLevel);
-		printf("Player health : %i\n", game.currentLevel.playerHealth);
+		level_updateHealth(&game.currentLevel);
 		if(game.currentLevel.playDone){
 			game.state = LEVEL_REQUIEM;
 			return;
@@ -112,7 +112,7 @@ int main(){
 
 	GameState state = PRELUDE;
 	// ================= CREATE TEXTURES =================
-	const int TEXTURE_NUM = 6;
+	const int TEXTURE_NUM = 7;
 	const char * textureNames[TEXTURE_NUM];
 	game.textureNames = textureNames;
 	// Follows loading of textures
@@ -122,6 +122,7 @@ int main(){
 	textureNames[3] = "res/enemy.png";
 	textureNames[4] = "res/flare.png";
 	textureNames[5] = "res/flare_indicator.png";
+	textureNames[6] = "res/healthbar.png";
 	// Create texture pointers on stack
 	Texture2D textures[TEXTURE_NUM];
 	game.textures = textures;
