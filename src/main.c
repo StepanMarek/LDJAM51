@@ -20,7 +20,14 @@ void UpdateFrame(){
 	} else {
 		level.collidingVels[level.playerCollIndex].x = 0.0f;
 	}
+	if(IsKeyPressed(KEY_W) && level.collidingVels[level.playerCollIndex].y == 0.0f){
+		// Jump
+		level.collidingVels[level.playerCollIndex].y = -10.0f;
+	}
+	// Acceleration due to gravity
+	level.collidingVels[level.playerCollIndex].y += 0.5f;
 	level.collidingRects[level.playerCollIndex].x += level.collidingVels[level.playerCollIndex].x;
+	level.collidingRects[level.playerCollIndex].y += level.collidingVels[level.playerCollIndex].y;
 	// Rectangle playerRect = {level.animPositions[level.playerAnimIndex].x, level.animPositions[level.playerAnimIndex].y, level.animations[level.playerAnimIndex].destination.width, level.animations[level.playerAnimIndex].destination.height};
 	// // Check for collisions
 	// if(CheckCollisionRecs(playerRect, level.leftBound)){
@@ -39,8 +46,8 @@ void UpdateFrame(){
 		ClearBackground(RAYWHITE);
 		DrawFPS(20, 20);
 		// Camera bounds
-		DrawRectangleRec(camera.leftBound, BLUE);
-		DrawRectangleRec(camera.rightBound, BLUE);
+		// DrawRectangleRec(camera.leftBound, BLUE);
+		// DrawRectangleRec(camera.rightBound, BLUE);
 		BeginMode2D(camera.camera);
 			// DrawRectangleRec(wall, RED);
 			DrawRectangleRec(level.leftBound, RED);
@@ -77,7 +84,7 @@ int main(){
 	Vector2 positions_one[2];
 	level.animPositions = positions_one;
 	positions_one[0] = (Vector2) {0, 0};
-	positions_one[1] = (Vector2) {-300, 120};
+	positions_one[1] = (Vector2) {-300, 300};
 	level.playerAnimIndex = 0;
 	level.playerVelocity = (Vector2) {0,0};
 	level.leftBound = (Rectangle){-350,0,50, 600};
@@ -86,7 +93,7 @@ int main(){
 	Rectangle collRects[2];
 	level.collidingRects = collRects;
 	level.collidingRects[0] = (Rectangle){0, 0, 50, 100};
-	level.collidingRects[1] = (Rectangle){-300,120,1200,40};
+	level.collidingRects[1] = (Rectangle){-300,300,1200,40};
 	bool moveable[2];
 	level.moveable = moveable;
 	level.moveable[0] = true;
