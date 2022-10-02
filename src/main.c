@@ -87,6 +87,13 @@ void UpdateFrame(){
 		level_updateFlare(&game.currentLevel);
 		level_updateHealth(&game.currentLevel);
 		level_checkDoor(&game.currentLevel);
+		if(game.currentLevel.playerHealth < 0){
+			// Restart level
+			level_free(game.currentLevel);
+			game.currentLevel = level_one(game);
+			// Reset camera
+			camera.camera.target.x = 0.0;
+		}
 		if(game.currentLevel.playDone){
 			game.state = LEVEL_REQUIEM;
 			return;
