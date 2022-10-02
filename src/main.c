@@ -112,7 +112,7 @@ int main(){
 
 	GameState state = PRELUDE;
 	// ================= CREATE TEXTURES =================
-	const int TEXTURE_NUM = 5;
+	const int TEXTURE_NUM = 6;
 	const char * textureNames[TEXTURE_NUM];
 	game.textureNames = textureNames;
 	// Follows loading of textures
@@ -121,6 +121,7 @@ int main(){
 	textureNames[2] = "res/player.png";
 	textureNames[3] = "res/enemy.png";
 	textureNames[4] = "res/flare.png";
+	textureNames[5] = "res/flare_indicator.png";
 	// Create texture pointers on stack
 	Texture2D textures[TEXTURE_NUM];
 	game.textures = textures;
