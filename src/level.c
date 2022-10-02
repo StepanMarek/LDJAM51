@@ -166,6 +166,14 @@ void level_updateFlare(Level * level){
 	}
 }
 
+void level_updateHealth(Level * level){
+	if(level->guiHealth == -1){
+		return;
+	}
+	// Health bar present
+	level->gui.animations[level->guiHealth].destination.height = level->playerHealth / 2;
+}
+
 void level_free(Level level){
 	// Free the array of animations
 	free(level.animations);
@@ -240,6 +248,7 @@ Level level_alloc(int animNum, int collNum, int preludeNum, int playNum, int gui
 		level.shieldingPlatforms[i] = -1;
 	}
 	level.shieldingPlatformsNum = shieldingPlatforms;
+	level.guiHealth = -1;
 	return level;
 
 }

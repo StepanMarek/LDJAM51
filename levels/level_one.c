@@ -7,7 +7,7 @@
 
 Level level_one(Game game){
 	// Level level_alloc(int animNum, int collNum, int preludeNum, int playNum, int guiTextNum, int guiAnimNum, int enemies, int shields);
-	Level level = level_alloc(6, 5, 0, 0, 0, 1, 1, 2);
+	Level level = level_alloc(6, 5, 0, 0, 0, 2, 1, 2);
 	
 	// Player
 	level.animations[0] = animation_CreateAnimation(game.textures[2], 1, 50, 100, 0, 50, 50, 100);
@@ -78,6 +78,9 @@ Level level_one(Game game){
 	// GUI
 	level.gui.animations[0] = animation_CreateAnimation(game.textures[5], 8, 40, 40, 0, 100, 80, 80);
 	level.gui.animPositions[0] = (Vector2) {700,20};
+	level.gui.animations[1] = animation_CreateAnimation(game.textures[6], 1, 40, 40, 0, 100, 20, 100);
+	level.gui.animPositions[1] = (Vector2) {730,110};
+	level.guiHealth = 1;
 
 	// Define level bounds
 	level.leftBound = (Rectangle){-350,0,50, 600};
