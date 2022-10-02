@@ -23,6 +23,8 @@ typedef struct {
 	Level * levels;
 	int levelIndex;
 	int levelNum;
+	const char ** texts;
+	int textNum;
 } Game;
 
 void game_loadTextures(const char ** textureNames, int textureNum, Texture2D * textures);

@@ -1,6 +1,9 @@
 ASSETS=res
 SOURCE=src/main.c src/game.c src/animation.c src/collisions.c src/boundedCamera.c src/level.c src/gui.c
-HEADERS=src/game.h src/animation.h src/collisions.h src/boundedCamera.h src/level.h src/gui.h
+HEADERS=src/game.h src/animation.h src/collisions.h src/boundedCamera.h src/level.h src/gui.h levels/levels.h
+LEVELS_LOCATION=levels
+LEVELS=$(addprefix $(LEVELS_LOCATION)/, level_one.c)
+
 LIBS=src/libraylib.a
 EMCC_FLAGS=-s USE_GLFW=3
 
@@ -14,8 +17,8 @@ all: main.js
 run: all
 	./server.sh
 
-main.js: $(SOURCE) $(LIBS) $(ASSETS)/* $(HEADERS)
-	emcc -I$(RAYLIB_LOCATION) $(EMCC_FLAGS) $(LIBS) $(SOURCE) -o $@ --preload-file $(ASSETS)
+main.js: $(SOURCE) $(LIBS) $(ASSETS)/* $(HEADERS) $(LEVELS)
+	emcc -I$(RAYLIB_LOCATION) -I$(LEVELS_LOCATION) -Isrc $(EMCC_FLAGS) $(LIBS) $(SOURCE) $(LEVELS) -o $@ --preload-file $(ASSETS)
 
 src/libraylib.a: $(LOCATED_RAYLIB_OBJECTS)
 	emar rcs $@ $^

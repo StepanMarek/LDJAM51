@@ -2,6 +2,8 @@
 #include "animation.h"
 #include "level.h"
 #include "collisions.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 int level_map(Level level, int key){
 	for(int i = 0; i < level.collNum; i++){
@@ -66,10 +68,64 @@ void level_progressPrelude(Level * level){
 		// Prelude done
 		level->preludeIndex = 0;
 		level->preludeDone = true;
-		level->gui = level->playGui;
+		// If there is a play guy, load it
+		if(level->playNum > 0){
+			level->gui = level->playGuis[0];
+		}
 	} else {
 		// Progress to the next gui
 		level->preludeIndex += 1;
 		level->gui = level->preludeGuis[level->preludeIndex];
 	}
+}
+
+void level_free(Level level){
+	// Free the array of animations
+	free(level.animations);
+	// Free the animation positions
+	free(level.animPositions);
+	// Free array of colliding rects
+	free(level.collidingRects);
+	// Free array of colliding velocities
+	free(level.collidingVels);
+	// Free array of movable identifiers
+	free(level.moveable);
+	// Free both keys and values of coll->anim map
+	free(level.collAnimMap.keys);
+	free(level.collAnimMap.vals);
+	// Call necessary frees on gui
+	gui_free(level.gui);
+	// Now, free each other defined gui
+	for(int i=0; i < level.preludeNum; i++){
+		gui_free(level.preludeGuis[i]);
+	}
+	for(int i=0; i < level.playNum; i++){
+		gui_free(level.playGuis[i]);
+	}
+}
+Level level_alloc(int animNum, int collNum, int preludeNum, int playNum, int guiTextNum, int guiAnimNum){
+	Level level;
+	level.animations = (Animation *) malloc(sizeof(Animation) * animNum);
+	level.animPositions = (Vector2 *) malloc(sizeof(Vector2) * animNum);
+	level.collidingRects = (Rectangle *) malloc(sizeof(Rectangle) * collNum);
+	level.collidingVels = (Vector2 *) malloc(sizeof(Vector2) * collNum);
+	level.moveable = (bool *) malloc(sizeof(bool) * collNum);
+	level.collAnimMap.keys = (int *) malloc(sizeof(int) * collNum);
+	level.collAnimMap.vals = (int *) malloc(sizeof(int) * collNum);
+	// Automatically initiate to identity mapping
+	for(int i = 0; i < collNum; i++){
+		level.collAnimMap.keys[i] = i;
+		level.collAnimMap.vals[i] = i;
+	}
+	// Automatically create specified gui, others have to be allocated manually
+	level.gui = gui_alloc(guiTextNum, guiAnimNum);
+	level.preludeGuis = (GuiManager *) malloc(sizeof(GuiManager) * preludeNum);
+	level.playGuis = (GuiManager *) malloc(sizeof(GuiManager) * playNum);
+	// Write known values
+	level.animNum = animNum;
+	level.collNum = collNum;
+	level.preludeNum = preludeNum;
+	level.playNum = playNum;
+	return level;
+
 }

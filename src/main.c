@@ -6,6 +6,7 @@
 #include "collisions.h"
 #include "boundedCamera.h"
 #include "gui.h"
+#include "levels.h"
 
 Game game;
 BoundedCamera camera;
@@ -71,12 +72,12 @@ void UpdateFrame(){
 		// DrawRectangleRec(camera.leftBound, BLUE);
 		// DrawRectangleRec(camera.rightBound, BLUE);
 		// Draw GUI
-		gui_renderTexts(game.currentLevel.gui);
-		gui_renderAnimations(game.currentLevel.gui);
+		gui_renderTexts(&(game.currentLevel.gui), game.levelIndex == 1);
+		gui_renderAnimations(&(game.currentLevel.gui), game.levelIndex == 1);
 		BeginMode2D(camera.camera);
 			// Draw level bounds
-			DrawRectangleRec(game.currentLevel.leftBound, RED);
-			DrawRectangleRec(game.currentLevel.rightBound, RED);
+			// DrawRectangleRec(game.currentLevel.leftBound, RED);
+			// DrawRectangleRec(game.currentLevel.rightBound, RED);
 			level_renderAnimations(&game.currentLevel);
 		EndMode2D();
 	EndDrawing();
@@ -97,6 +98,10 @@ int main(){
 	Texture2D textures[TEXTURE_NUM];
 	game.textures = textures;
 	game_loadTextures(game.textureNames, TEXTURE_NUM, game.textures);
+	const char * gameTexts[1];
+	game.texts = gameTexts;
+	game.texts[0] = "Text in global context";
+	game.textNum = 1;
 	// ================= CREATE ZERO LEVEL =================
 	Level level_zero;
 	level_zero.animNum = 0;
@@ -131,60 +136,61 @@ int main(){
 	level_zero_gui2.textPositions[0].x = 300;
 	level_zero_gui2.textPositions[0].y = 300;
 	// ====
-	level_zero.gui = &level_zero_gui;
-	level_zero.playGui = &level_zero_gui;
+	level_zero.gui = level_zero_gui;
 	level_zero.preludeNum = 2;
+	level_zero.playNum = 0;
 	level_zero.preludeIndex = 0;
-	GuiManager * preludeGuis[2];
-	preludeGuis[0] = &level_zero_gui;
-	preludeGuis[1] = &level_zero_gui2;
+	GuiManager preludeGuis[2];
+	preludeGuis[0] = level_zero_gui;
+	preludeGuis[1] = level_zero_gui2;
 	level_zero.preludeGuis = preludeGuis;
 	level_zero.preludeDone = false;
 	level_zero.playDone = true;
 	level_zero.requiemDone = false;
 	// ================= CREATE LEVEL ======================
-	Level level;
-	Animation animations_one[2];
-	level.animations = animations_one;
-	animations_one[0] = animation_CreateAnimation(game.textures[0], 2, 50, 100, 0, 50, 50, 100);
-	animations_one[1] = animation_CreateAnimation(game.textures[1], 1, 40, 20, 0, 50, 1200, 40);
-	animations_one[1].drawTiled = true;
-	animations_one[1].tileScale = 2.0f;
-	level.animNum = 2;
-	Vector2 positions_one[2];
-	level.animPositions = positions_one;
-	positions_one[0] = (Vector2) {0, 0};
-	positions_one[1] = (Vector2) {-300, 300};
-	level.playerAnimIndex = 0;
-	level.playerVelocity = (Vector2) {0,0};
-	level.leftBound = (Rectangle){-350,0,50, 600};
-	level.rightBound = (Rectangle){900,0,50,600};
-	level.boundOverextension = 10.0f;
-	Rectangle collRects[2];
-	level.collidingRects = collRects;
-	level.collidingRects[0] = (Rectangle){0, 0, 50, 100};
-	level.collidingRects[1] = (Rectangle){-300,300,1200,40};
-	bool moveable[2];
-	level.moveable = moveable;
-	level.moveable[0] = true;
-	level.moveable[1] = false;
-	Vector2 velocities_one[2];
-	level.collidingVels = velocities_one;
-	level.collidingVels[0] = (Vector2){0,0};
-	level.collidingVels[1] = (Vector2){0,0};
-	level.collNum = 2;
-	level.playerCollIndex = 0;
-	int levelMapKeys[2];
-	int levelMapVals[2];
-	level.collAnimMap.keys = levelMapKeys;
-	level.collAnimMap.vals = levelMapVals;
-	level.collAnimMap.keys[0] = 0;
-	level.collAnimMap.keys[1] = 1;
-	level.collAnimMap.vals[0] = 0;
-	level.collAnimMap.vals[1] = 1;
-	level.preludeDone = true;
-	level.playDone = false;
-	level.requiemDone = false;
+	Level level = level_one(game);
+	// Level level;
+	// Animation animations_one[2];
+	// level.animations = animations_one;
+	// animations_one[0] = animation_CreateAnimation(game.textures[0], 2, 50, 100, 0, 50, 50, 100);
+	// animations_one[1] = animation_CreateAnimation(game.textures[1], 1, 40, 20, 0, 50, 1200, 40);
+	// animations_one[1].drawTiled = true;
+	// animations_one[1].tileScale = 2.0f;
+	// level.animNum = 2;
+	// Vector2 positions_one[2];
+	// level.animPositions = positions_one;
+	// positions_one[0] = (Vector2) {0, 0};
+	// positions_one[1] = (Vector2) {-300, 300};
+	// level.playerAnimIndex = 0;
+	// level.playerVelocity = (Vector2) {0,0};
+	// level.leftBound = (Rectangle){-350,0,50, 600};
+	// level.rightBound = (Rectangle){900,0,50,600};
+	// level.boundOverextension = 10.0f;
+	// Rectangle collRects[2];
+	// level.collidingRects = collRects;
+	// level.collidingRects[0] = (Rectangle){0, 0, 50, 100};
+	// level.collidingRects[1] = (Rectangle){-300,300,1200,40};
+	// bool moveable[2];
+	// level.moveable = moveable;
+	// level.moveable[0] = true;
+	// level.moveable[1] = false;
+	// Vector2 velocities_one[2];
+	// level.collidingVels = velocities_one;
+	// level.collidingVels[0] = (Vector2){0,0};
+	// level.collidingVels[1] = (Vector2){0,0};
+	// level.collNum = 2;
+	// level.playerCollIndex = 0;
+	// int levelMapKeys[2];
+	// int levelMapVals[2];
+	// level.collAnimMap.keys = levelMapKeys;
+	// level.collAnimMap.vals = levelMapVals;
+	// level.collAnimMap.keys[0] = 0;
+	// level.collAnimMap.keys[1] = 1;
+	// level.collAnimMap.vals[0] = 0;
+	// level.collAnimMap.vals[1] = 1;
+	// level.preludeDone = true;
+	// level.playDone = false;
+	// level.requiemDone = false;
 	// ================= CAMERA SETUP ======================
 	camera.camera.target = (Vector2){-200, 0};
 	camera.camera.offset = (Vector2){0, 0};
@@ -193,25 +199,25 @@ int main(){
 	camera.leftBound = (Rectangle){0,0,150,600};
 	camera.rightBound = (Rectangle){650,0,150,600};
 	// ================= GUI SETUP =================
-	GuiManager gui;
-	const char * texts[1];
-	gui.texts = texts;
-	gui.textNum = 1;
-	Vector2 textPositions[1];
-	gui.textPositions = textPositions;
-	int textSizes[1];
-	gui.textSizes = textSizes;
-	Color textColors[1];
-	gui.textColors = textColors;	
-	gui_constructText(&gui, "GUI Text", 0);
-	Animation gui_anims[1];
-	gui.animations = gui_anims;
-	gui.animNum = 1;
-	Vector2 anim_pos[1];
-	gui.animPositions = anim_pos;
-	gui.animPositions[0] = (Vector2){300,200};
-	gui_constructAnimationStatic(&gui, 0, game.textures[0], 50, 100, 1, 200, 400);
-	level.gui = &gui;
+	// GuiManager gui;
+	// const char * texts[1];
+	// gui.texts = texts;
+	// gui.textNum = 1;
+	// Vector2 textPositions[1];
+	// gui.textPositions = textPositions;
+	// int textSizes[1];
+	// gui.textSizes = textSizes;
+	// Color textColors[1];
+	// gui.textColors = textColors;	
+	// gui_constructText(&gui, "GUI Text", 0);
+	// Animation gui_anims[1];
+	// gui.animations = gui_anims;
+	// gui.animNum = 1;
+	// Vector2 anim_pos[1];
+	// gui.animPositions = anim_pos;
+	// gui.animPositions[0] = (Vector2){300,200};
+	// gui_constructAnimationStatic(&gui, 0, game.textures[0], 50, 100, 1, 200, 400);
+	// level.gui = &gui;
 
 	// Set up current and next level
 	game.currentLevel = level_zero;
@@ -228,6 +234,7 @@ int main(){
 	emscripten_set_main_loop(UpdateFrame, 0, 1);
 
 	// Unload
+	level_free(level);
 	game_unloadTextures(game.textures, TEXTURE_NUM);
 
 	CloseWindow();

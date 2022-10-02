@@ -25,15 +25,16 @@ typedef struct {
 	int collNum;
 	IntIntMap collAnimMap;
 	int playerCollIndex;
-	GuiManager * gui;
+	GuiManager gui;
 	// This is the gui that is displayed during play
-	GuiManager * playGui;
 	bool preludeDone;
 	bool playDone;
 	bool requiemDone;
 	int preludeIndex;
 	int preludeNum;
-	GuiManager ** preludeGuis;
+	GuiManager * preludeGuis;
+	int playNum;
+	GuiManager * playGuis;
 } Level;
 
 int level_map(Level level, int key);
@@ -43,4 +44,6 @@ void level_handleBoundsCollisions(Level * level);
 void level_handleCollisions(Level * level);
 void level_updateAnimPositions(Level * level);
 void level_progressPrelude(Level * level);
+void level_free(Level level);
+Level level_alloc(int animNum, int collNum, int preludeNum, int playNum, int guiTextNum, int guiAnimNum);
 #endif
