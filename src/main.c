@@ -6,10 +6,12 @@
 #include "level.h"
 #include "collisions.h"
 #include "boundedCamera.h"
+#include "gui.h"
 
 Game game;
 Level level;
 BoundedCamera camera;
+GuiManager gui;
 
 void UpdateFrame(){
 	// Handle input for player animation
@@ -48,6 +50,9 @@ void UpdateFrame(){
 		// Camera bounds
 		// DrawRectangleRec(camera.leftBound, BLUE);
 		// DrawRectangleRec(camera.rightBound, BLUE);
+		// Draw GUI
+		gui_renderTexts(&gui);
+		gui_renderAnimations(&gui);
 		BeginMode2D(camera.camera);
 			// DrawRectangleRec(wall, RED);
 			DrawRectangleRec(level.leftBound, RED);
@@ -119,6 +124,24 @@ int main(){
 	camera.camera.rotation = 0.0f;
 	camera.leftBound = (Rectangle){0,0,150,600};
 	camera.rightBound = (Rectangle){650,0,150,600};
+	// ================= GUI SETUP =================
+	const char * texts[1];
+	gui.texts = texts;
+	gui.textNum = 1;
+	Vector2 textPositions[1];
+	gui.textPositions = textPositions;
+	int textSizes[1];
+	gui.textSizes = textSizes;
+	Color textColors[1];
+	gui.textColors = textColors;	
+	gui_constructText(&gui, "GUI Text", 0);
+	Animation gui_anims[1];
+	gui.animations = gui_anims;
+	gui.animNum = 1;
+	Vector2 anim_pos[1];
+	gui.animPositions = anim_pos;
+	gui.animPositions[0] = (Vector2){300,200};
+	gui_constructAnimationStatic(&gui, 0, game.textures[0], 50, 100, 1, 200, 400);
 
 	emscripten_set_main_loop(UpdateFrame, 0, 1);
 
