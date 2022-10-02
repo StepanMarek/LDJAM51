@@ -7,7 +7,7 @@
 
 Level level_one(Game game){
 	// Level level_alloc(int animNum, int collNum, int preludeNum, int playNum, int guiTextNum, int guiAnimNum);
-	Level level = level_alloc(3, 3, 0, 0, 0, 0);
+	Level level = level_alloc(3, 3, 0, 0, 0, 0, 1);
 	
 	// Player
 	level.animations[0] = animation_CreateAnimation(game.textures[2], 1, 50, 100, 0, 50, 50, 100);
@@ -40,6 +40,7 @@ Level level_one(Game game){
 	level.collidingVels[2] = (Vector2){0,0};
 	level.collAnimMap.keys[2] = 2;
 	level.collAnimMap.vals[2] = 2;
+	level.enemies[0] = 2;
 
 	// Define level bounds
 	level.leftBound = (Rectangle){-350,0,50, 600};
