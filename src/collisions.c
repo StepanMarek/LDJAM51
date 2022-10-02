@@ -150,3 +150,23 @@ void handleSingleXCollision(Rectangle * rect1, Rectangle rect2){
 		rect1->x += offsetX;
 	}
 }
+
+float getCollisionShielded(Rectangle rect1, Rectangle rect2){
+	// Returns the overlap in x direction of the two rectangles
+	// Even when they are not strictly overlapping
+	if(rect1.x > rect2.x){
+		if(rect2.x + rect2.width > rect1.x){
+			return rect2.x + rect2.width - rect1.x;
+		}
+		else{
+			return 0.0f;
+		}
+	} else {
+		if(rect1.x + rect1.width > rect2.x){
+			return rect1.x + rect1.width - rect2.x;
+		} else {
+			return 0.0f;
+		}
+	}
+}
+

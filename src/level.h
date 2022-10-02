@@ -30,6 +30,16 @@ typedef struct {
 	bool * enemiesAlive;
 	int enemiesNum;
 	int playerHealth;
+	//Flare
+	int flareTimer;
+	bool flaring;
+	int flareCooldown;
+	int flareDuration;
+	int flareAnimIndex;
+	// Shielding platform indices
+	int * shieldingPlatforms;
+	int shieldingPlatformsNum;
+	// GUI
 	GuiManager gui;
 	// This is the gui that is displayed during play
 	bool preludeDone;
@@ -50,6 +60,7 @@ void level_handleCollisions(Level * level);
 void level_updateAnimPositions(Level * level);
 void level_progressPrelude(Level * level);
 void level_free(Level level);
-Level level_alloc(int animNum, int collNum, int preludeNum, int playNum, int guiTextNum, int guiAnimNum, int enemiesNum);
+Level level_alloc(int animNum, int collNum, int preludeNum, int playNum, int guiTextNum, int guiAnimNum, int enemiesNum, int shieldingPlatforms);
 void level_takeDamageFromEnemies(Level * level);
+void level_updateFlare(Level * level);
 #endif

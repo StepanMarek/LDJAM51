@@ -58,6 +58,10 @@ void UpdateFrame(){
 		}
 		// Then, update enemy velocity in x towards player
 		for(int i = 0; i < game.currentLevel.enemiesNum; i++){
+			if(!game.currentLevel.enemiesAlive[i]){
+				// Dead
+				continue;
+			}
 			if(game.currentLevel.collidingRects[game.currentLevel.enemies[i]].x < game.currentLevel.collidingRects[game.currentLevel.playerCollIndex].x){
 				game.currentLevel.collidingVels[game.currentLevel.enemies[i]].x = 2.0f;
 			} else {
@@ -69,6 +73,9 @@ void UpdateFrame(){
 		level_updateAnimPositions(&game.currentLevel);
 		// Adjust animation positions
 		boundedCamera_updateCamera(&camera, game.currentLevel.collidingRects[game.currentLevel.playerCollIndex], game.currentLevel.leftBound.x+game.currentLevel.leftBound.width-game.currentLevel.boundOverextension,game.currentLevel.rightBound.x+game.currentLevel.boundOverextension);
+		// Update flare
+		level_updateFlare(&game.currentLevel);
+		printf("Player health : %i\n", game.currentLevel.playerHealth);
 		if(game.currentLevel.playDone){
 			game.state = LEVEL_REQUIEM;
 			return;

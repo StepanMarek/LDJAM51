@@ -5,7 +5,7 @@
 
 Level level_zero(Game game){
 	// ================= CREATE ZERO LEVEL =================
-	Level level_zero = level_alloc(0, 0, 2, 0, 1, 0, 0);
+	Level level_zero = level_alloc(0, 0, 2, 0, 1, 0, 0, 0);
 	// === Create first prelude screen
 	gui_constructText(&(level_zero.gui), game.texts[1], 0);
 	// Make the text centered

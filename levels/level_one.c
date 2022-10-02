@@ -6,8 +6,8 @@
 #include <stdio.h>
 
 Level level_one(Game game){
-	// Level level_alloc(int animNum, int collNum, int preludeNum, int playNum, int guiTextNum, int guiAnimNum);
-	Level level = level_alloc(4, 3, 0, 0, 0, 0, 1);
+	// Level level_alloc(int animNum, int collNum, int preludeNum, int playNum, int guiTextNum, int guiAnimNum, int enemies, int shields);
+	Level level = level_alloc(5, 4, 0, 0, 0, 0, 1, 1);
 	
 	// Player
 	level.animations[0] = animation_CreateAnimation(game.textures[2], 1, 50, 100, 0, 50, 50, 100);
@@ -25,8 +25,8 @@ Level level_one(Game game){
 	level.animations[1] = animation_CreateAnimation(game.textures[1], 1, 40, 20, 0, 50, 1200, 40);
 	level.animations[1].drawTiled = true;
 	level.animations[1].tileScale = 2.0f;
-	level.animPositions[1] = (Vector2) {-300, 300};
-	level.collidingRects[1] = (Rectangle){-300,300,1200,40};
+	level.animPositions[1] = (Vector2) {-300, 560};
+	level.collidingRects[1] = (Rectangle){-300,560,1200,40};
 	level.moveable[1] = false;
 	level.collidingVels[1] = (Vector2){0,0};
 	level.collAnimMap.keys[1] = 1;
@@ -46,8 +46,22 @@ Level level_one(Game game){
 	level.animations[3] = animation_CreateAnimation(game.textures[4], 5, 800, 100, 0, 20, 1250, 100);
 	level.animations[3].drawTiled = true;
 	level.animations[3].tileScale = 1.0f;
+	level.animations[3].colormask = BLANK;
 	level.animPositions[3].x = -350.0f;
 	level.animPositions[3].y = 0.0f;
+	level.flareAnimIndex = 3;
+
+	// Shielding platform
+	level.animations[4] = animation_CreateAnimation(game.textures[1], 1, 40, 30, 0, 50, 160,60);
+	level.animations[4].drawTiled = true;
+	level.animations[4].tileScale = 2;
+	level.animPositions[4] = (Vector2) {200,200};
+	level.collidingRects[3] = (Rectangle){200,200,160,40};
+	level.moveable[3] = false;
+	level.collidingVels[3] = (Vector2){0,0};
+	level.collAnimMap.keys[3] = 3;
+	level.collAnimMap.vals[3] = 4;
+	level.shieldingPlatforms[0] = 3;
 
 	// Define level bounds
 	level.leftBound = (Rectangle){-350,0,50, 600};

@@ -99,6 +99,73 @@ void level_takeDamageFromEnemies(Level * level){
 	level->playerHealth -= 1;
 }
 
+void level_updateFlare(Level * level){
+	// In case there is no flare
+	if(level->flareAnimIndex == -1){
+		return;
+	}
+	// Flare timeout
+	level->flareTimer += 1;
+	if((!level->flaring) && level->flareTimer >= level->flareCooldown){
+		// Start flaring
+		level->flaring = true;
+		level->flareTimer = 0;
+		// Update texture
+		level->animations[level->flareAnimIndex].colormask = WHITE;
+		return;
+	}
+	if(level->flaring && level->flareTimer >= level->flareDuration){
+		level->flaring = false;
+		level->flareTimer = 0;
+		// Update texture
+		level->animations[level->flareAnimIndex].colormask = BLANK;
+		return;
+	}
+	// Now, it flare is still flaring, check, whether player or enemies are under a platform
+	if(level->flaring){
+		bool shielded = false;
+		for(int i = 0; i < level->enemiesNum; i++){
+			shielded = false;
+			for(int j = 0; j < level->shieldingPlatformsNum; j++){
+				if(level->collidingRects[level->shieldingPlatforms[j]].y > level->collidingRects[level->enemies[i]].y){
+					// Platform bellow enemy cannot shield
+					continue;
+				}
+				// Shield or no shield?
+				if(getCollisionShielded(level->collidingRects[level->enemies[i]], level->collidingRects[level->shieldingPlatforms[j]]) >= 0.9 * level->collidingRects[level->enemies[i]].width){
+					// Shielded
+					shielded = true;
+					break;
+				}
+			}
+			if(!shielded){
+				// Die
+				level->enemiesAlive[i] = false;
+				level->collidingVels[level->enemies[i]].x = 0.0f;
+			}
+			
+		}
+		// Do the same for player, but instead take damage
+
+		shielded = false;
+		for(int j = 0; j < level->shieldingPlatformsNum; j++){
+			if(level->collidingRects[level->shieldingPlatforms[j]].y > level->collidingRects[level->playerCollIndex].y){
+				// Platform bellow enemy cannot shield
+				continue;
+			}
+			// Shield or no shield?
+			if(getCollisionShielded(level->collidingRects[level->playerCollIndex], level->collidingRects[level->shieldingPlatforms[j]]) >= 0.9 * level->collidingRects[level->playerCollIndex].width){
+				// Shielded
+				shielded = true;
+				break;
+			}
+		}
+		if(!shielded){
+			level->playerHealth -= 5;
+		}
+	}
+}
+
 void level_free(Level level){
 	// Free the array of animations
 	free(level.animations);
@@ -125,8 +192,9 @@ void level_free(Level level){
 	// Clear arrays for damage taking
 	free(level.enemies);
 	free(level.enemiesAlive);
+	free(level.shieldingPlatforms);
 }
-Level level_alloc(int animNum, int collNum, int preludeNum, int playNum, int guiTextNum, int guiAnimNum, int numOfEnemies){
+Level level_alloc(int animNum, int collNum, int preludeNum, int playNum, int guiTextNum, int guiAnimNum, int numOfEnemies, int shieldingPlatforms){
 	Level level;
 	level.animations = (Animation *) malloc(sizeof(Animation) * animNum);
 	level.animPositions = (Vector2 *) malloc(sizeof(Vector2) * animNum);
@@ -159,6 +227,19 @@ Level level_alloc(int animNum, int collNum, int preludeNum, int playNum, int gui
 	level.preludeNum = preludeNum;
 	level.playNum = playNum;
 	level.enemiesNum = numOfEnemies;
+	// Default flare
+	level.flareTimer = 0;
+	level.flaring = false;
+	level.flareCooldown = 600;
+	level.flareDuration = 200;
+	level.flareAnimIndex = -1;
+	// Shielding platforms
+	level.shieldingPlatforms = (int *) malloc(sizeof(int) * shieldingPlatforms);
+	// Initiate as -1 - no platform
+	for(int i = 0; i < shieldingPlatforms; i++){
+		level.shieldingPlatforms[i] = -1;
+	}
+	level.shieldingPlatformsNum = shieldingPlatforms;
 	return level;
 
 }
