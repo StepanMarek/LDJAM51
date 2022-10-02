@@ -34,8 +34,12 @@ void UpdateFrame(){
 		// Handle input for player animation
 		if(IsKeyDown(KEY_D)){
 			game.currentLevel.collidingVels[game.currentLevel.playerCollIndex].x = 3.0f;
+			// Set player direction
+			game.currentLevel.animations[game.currentLevel.playerAnimIndex].startFrame = 0;
 		} else if (IsKeyDown(KEY_A)){
 			game.currentLevel.collidingVels[game.currentLevel.playerCollIndex].x = -3.0f;
+			// Set player direction
+			game.currentLevel.animations[game.currentLevel.playerAnimIndex].startFrame = 1;
 		} else {
 			game.currentLevel.collidingVels[game.currentLevel.playerCollIndex].x = 0.0f;
 		}
