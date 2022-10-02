@@ -36,12 +36,18 @@ void UpdateFrame(){
 			game.currentLevel.collidingVels[game.currentLevel.playerCollIndex].x = 3.0f;
 			// Set player direction
 			game.currentLevel.animations[game.currentLevel.playerAnimIndex].startFrame = 0;
+			game.currentLevel.animations[game.currentLevel.playerAnimIndex].numFrames = 4;
 		} else if (IsKeyDown(KEY_A)){
 			game.currentLevel.collidingVels[game.currentLevel.playerCollIndex].x = -3.0f;
 			// Set player direction
-			game.currentLevel.animations[game.currentLevel.playerAnimIndex].startFrame = 1;
+			game.currentLevel.animations[game.currentLevel.playerAnimIndex].startFrame = 4;
+			game.currentLevel.animations[game.currentLevel.playerAnimIndex].numFrames = 4;
 		} else {
 			game.currentLevel.collidingVels[game.currentLevel.playerCollIndex].x = 0.0f;
+			if(game.currentLevel.animations[game.currentLevel.playerAnimIndex].startFrame == 4){
+				game.currentLevel.animations[game.currentLevel.playerAnimIndex].startFrame = 5;
+			}
+			game.currentLevel.animations[game.currentLevel.playerAnimIndex].numFrames = 1;
 		}
 		if(IsKeyPressed(KEY_W) && game.currentLevel.collidingVels[game.currentLevel.playerCollIndex].y == 0.0f){
 			// Jump
@@ -60,12 +66,16 @@ void UpdateFrame(){
 		for(int i = 0; i < game.currentLevel.enemiesNum; i++){
 			if(!game.currentLevel.enemiesAlive[i]){
 				// Dead
+				game.currentLevel.animations[game.currentLevel.enemies[i]].startFrame = 4;
+				game.currentLevel.animations[game.currentLevel.enemies[i]].numFrames = 1;
 				continue;
 			}
 			if(game.currentLevel.collidingRects[game.currentLevel.enemies[i]].x < game.currentLevel.collidingRects[game.currentLevel.playerCollIndex].x){
 				game.currentLevel.collidingVels[game.currentLevel.enemies[i]].x = 2.0f;
+				game.currentLevel.animations[game.currentLevel.enemies[i]].startFrame = 0;
 			} else {
 				game.currentLevel.collidingVels[game.currentLevel.enemies[i]].x = -2.0f;
+				game.currentLevel.animations[game.currentLevel.enemies[i]].startFrame = 2;
 			}
 		}
 		level_handleBoundsCollisions(&game.currentLevel);
@@ -112,17 +122,18 @@ int main(){
 
 	GameState state = PRELUDE;
 	// ================= CREATE TEXTURES =================
-	const int TEXTURE_NUM = 7;
+	const int TEXTURE_NUM = 8;
 	const char * textureNames[TEXTURE_NUM];
 	game.textureNames = textureNames;
 	// Follows loading of textures
 	textureNames[0] = "res/trial_anim.png";
 	textureNames[1] = "res/platform.png";
-	textureNames[2] = "res/player.png";
-	textureNames[3] = "res/enemy.png";
+	textureNames[2] = "res/player_full.png";
+	textureNames[3] = "res/enemyfull.png";
 	textureNames[4] = "res/flare.png";
 	textureNames[5] = "res/flare_indicator.png";
 	textureNames[6] = "res/healthbar.png";
+	textureNames[7] = "res/door.png";
 	// Create texture pointers on stack
 	Texture2D textures[TEXTURE_NUM];
 	game.textures = textures;

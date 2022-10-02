@@ -10,7 +10,7 @@ Level level_one(Game game){
 	Level level = level_alloc(6, 5, 0, 0, 0, 2, 1, 2);
 	
 	// Player
-	level.animations[0] = animation_CreateAnimation(game.textures[2], 1, 50, 100, 0, 50, 50, 100);
+	level.animations[0] = animation_CreateAnimation(game.textures[2], 4, 50, 100, 0, 20, 50, 100);
 	level.animPositions[0] = (Vector2) {0, 0};
 	level.playerAnimIndex = 0;
 	level.playerVelocity = (Vector2) {0,0};
@@ -33,7 +33,7 @@ Level level_one(Game game){
 	level.collAnimMap.vals[1] = 1;
 
 	// Enemy
-	level.animations[2] = animation_CreateAnimation(game.textures[3], 1, 50, 100, 0, 50, 50, 100);
+	level.animations[2] = animation_CreateAnimation(game.textures[3], 2, 50, 100, 0, 50, 50, 100);
 	level.animPositions[2] = (Vector2){200,50};
 	level.collidingRects[2] = (Rectangle){200,50,50,100};
 	level.moveable[2] = true;
