@@ -60,3 +60,16 @@ void level_updateAnimPositions(Level * level){
 		level->animPositions[mappedI].y = level->collidingRects[i].y;
 	}
 }
+
+void level_progressPrelude(Level * level){
+	if(level->preludeIndex + 1 >= level->preludeNum){
+		// Prelude done
+		level->preludeIndex = 0;
+		level->preludeDone = true;
+		level->gui = level->playGui;
+	} else {
+		// Progress to the next gui
+		level->preludeIndex += 1;
+		level->gui = level->preludeGuis[level->preludeIndex];
+	}
+}

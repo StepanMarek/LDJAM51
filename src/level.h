@@ -1,5 +1,6 @@
 #include "raylib.h"
 #include "animation.h"
+#include "gui.h"
 #ifndef GAME_LEVEL
 #define GAME_LEVEL
 
@@ -24,6 +25,15 @@ typedef struct {
 	int collNum;
 	IntIntMap collAnimMap;
 	int playerCollIndex;
+	GuiManager * gui;
+	// This is the gui that is displayed during play
+	GuiManager * playGui;
+	bool preludeDone;
+	bool playDone;
+	bool requiemDone;
+	int preludeIndex;
+	int preludeNum;
+	GuiManager ** preludeGuis;
 } Level;
 
 int level_map(Level level, int key);
@@ -32,4 +42,5 @@ void level_renderAnimations(Level * level);
 void level_handleBoundsCollisions(Level * level);
 void level_handleCollisions(Level * level);
 void level_updateAnimPositions(Level * level);
+void level_progressPrelude(Level * level);
 #endif
