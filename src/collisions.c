@@ -1,5 +1,6 @@
 #include "raylib.h"
 #include "math.h"
+
 // Start with the more general function for two moving objects colliding
 // In this case, they both move to restore non-colliding state
 // Returns whether the offset occurs in the x direction
@@ -64,8 +65,7 @@ bool getCollisionSingleOffset(Rectangle * rect1, Rectangle * rect2, Vector2 * of
 			direction = -1;
 		}
 		offset->x = 0.0;
-		// TODO : Decide whether moving additional pixel is necessary or not?
-		offset->y = direction * (collRect.height/2);
+		offset->y = direction * collRect.height;
 		return false;
 	} else {
 		// Move in width/x
@@ -74,7 +74,7 @@ bool getCollisionSingleOffset(Rectangle * rect1, Rectangle * rect2, Vector2 * of
 			direction = -1;
 		}
 		offset->y = 0.0;
-		offset->x = direction * (collRect.width/2);
+		offset->x = direction * collRect.width;
 		return true;
 	}
 }
@@ -129,5 +129,24 @@ void handleCollision(Rectangle * rect1, Rectangle * rect2, Vector2 * vel1, Vecto
 			vel1->y = 0.0;
 			vel2->y = 0.0;
 		}
+	}
+}
+
+float getCollisionSingleXOffset(Rectangle rect1, Rectangle rect2){
+	// Returns the overlap in x direction of the two rectangles
+	Rectangle collRect = GetCollisionRec(rect1, rect2);
+	return collRect.width;
+}
+
+void handleSingleXCollision(Rectangle * rect1, Rectangle rect2){
+	// Get the offset
+	float offsetX = getCollisionSingleXOffset(*rect1, rect2);
+	// Depending on direction, move the movable rectangle
+	if(rect2.x > rect1->x){
+		// Collision from the left, move back left
+		rect1->x -= offsetX;
+	} else {
+		// Collision from the right, move back right
+		rect1->x += offsetX;
 	}
 }
