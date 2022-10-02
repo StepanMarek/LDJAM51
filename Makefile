@@ -17,6 +17,9 @@ all: main.js
 run: all
 	./server.sh
 
+submission: all
+	tar czvf pulsar.tar.gz index.html main.js main.data main.wasm
+
 main.js: $(SOURCE) $(LIBS) $(ASSETS)/* $(HEADERS) $(LEVELS)
 	emcc -I$(RAYLIB_LOCATION) -I$(LEVELS_LOCATION) -Isrc $(EMCC_FLAGS) $(LIBS) $(SOURCE) $(LEVELS) -o $@ --preload-file $(ASSETS)
 

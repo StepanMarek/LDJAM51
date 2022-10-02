@@ -25,8 +25,8 @@ Level level_one(Game game){
 	level.animations[1] = animation_CreateAnimation(game.textures[1], 1, 40, 20, 0, 50, 1200, 40);
 	level.animations[1].drawTiled = true;
 	level.animations[1].tileScale = 2.0f;
-	level.animPositions[1] = (Vector2) {-300, 560};
-	level.collidingRects[1] = (Rectangle){-300,560,1200,40};
+	level.animPositions[1] = (Vector2) {-300, 513};
+	level.collidingRects[1] = (Rectangle){-300,513,1200,40};
 	level.moveable[1] = false;
 	level.collidingVels[1] = (Vector2){0,0};
 	level.collAnimMap.keys[1] = 1;
@@ -67,7 +67,7 @@ Level level_one(Game game){
 	level.animations[5] = animation_CreateAnimation(game.textures[1], 1, 40, 30, 0, 50, 160,60);
 	level.animations[5].drawTiled = true;
 	level.animations[5].tileScale = 2;
-	level.animPositions[5] = (Vector2) {50,450};
+	level.animPositions[5] = (Vector2) {50,400};
 	level.collidingRects[4] = (Rectangle){50,450,160,40};
 	level.moveable[4] = false;
 	level.collidingVels[4] = (Vector2){0,0};
@@ -78,7 +78,7 @@ Level level_one(Game game){
 	// Door
 	level.animations[6] = animation_CreateAnimation(game.textures[7], 1, 50, 100, 0, 50, 50, 100);
 	level.animPositions[6].x = 850.0f;
-	level.animPositions[6].y = 460.0f;
+	level.animPositions[6].y = 413.0f;
 	level.doorAnimIndex = 6;
 
 	// GUI

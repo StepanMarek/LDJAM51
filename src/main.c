@@ -126,7 +126,7 @@ void UpdateFrame(){
 }
 
 int main(){
-	InitWindow(800,600, "simple example");
+	InitWindow(948,553, "simple example");
 
 	GameState state = PRELUDE;
 	// ================= CREATE TEXTURES =================
