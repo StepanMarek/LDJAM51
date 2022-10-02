@@ -17,7 +17,7 @@ void level_renderAnimations(Level * level){
 	// For each animation, draw it at given position
 	for(int i = 0; i < level->animNum; i++){
 		// Draw animation at its corresponding position
-		animation_DrawUpdate(&(level->animations[i]), level->animPositions[i]);
+		animation_DrawUpdate(&(level->animations[i]), level->animPositions[i], false);
 	}
 }
 
@@ -59,7 +59,6 @@ void level_handleCollisions(Level * level){
 					if(isLiveEnemy){
 						// Deal damage
 						level_takeDamageFromEnemies(level);
-						printf("Health : %i\n", level->playerHealth);
 					}
 				}
 			}

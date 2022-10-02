@@ -25,7 +25,7 @@ void gui_constructText(GuiManager * gui, const char * text, int textIndex){
 
 void gui_renderAnimations(GuiManager * gui, bool debug){
 	for(int i = 0; i < gui->animNum; i++){
-		animation_DrawUpdate(&(gui->animations[i]), gui->animPositions[i]);
+		animation_DrawUpdate(&(gui->animations[i]), gui->animPositions[i], false);
 	}	
 }
 
