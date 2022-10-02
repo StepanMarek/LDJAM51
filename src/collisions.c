@@ -141,7 +141,6 @@ float getCollisionSingleXOffset(Rectangle rect1, Rectangle rect2){
 void handleSingleXCollision(Rectangle * rect1, Rectangle rect2){
 	// Get the offset
 	float offsetX = getCollisionSingleXOffset(*rect1, rect2);
-	printf("Offset : %f\n", offsetX);
 	// Depending on direction, move the movable rectangle
 	if(rect2.x > rect1->x){
 		// Collision from the left, move back left

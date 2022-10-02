@@ -14,28 +14,27 @@ BoundedCamera camera;
 void UpdateFrame(){
 	// Handle input for player animation
 	if(IsKeyDown(KEY_D)){
-		level.playerVelocity.x = 3.0f;
+		level.collidingVels[level.playerCollIndex].x = 3.0f;
 	} else if (IsKeyDown(KEY_A)){
-		level.playerVelocity.x = -3.0f;
+		level.collidingVels[level.playerCollIndex].x = -3.0f;
 	} else {
-		level.playerVelocity.x = 0.0f;
+		level.collidingVels[level.playerCollIndex].x = 0.0f;
 	}
-	level.animPositions[level.playerAnimIndex].x += level.playerVelocity.x;
-	Rectangle playerRect = {level.animPositions[level.playerAnimIndex].x, level.animPositions[level.playerAnimIndex].y, level.animations[level.playerAnimIndex].destination.width, level.animations[level.playerAnimIndex].destination.height};
-	// Check for collisions
-	if(CheckCollisionRecs(playerRect, level.leftBound)){
-		handleSingleXCollision(&playerRect, level.leftBound);
-	}
-	if(CheckCollisionRecs(playerRect, level.rightBound)){
-		handleSingleXCollision(&playerRect, level.rightBound);
-	}
-	// Adjust animation positions
-	level.animPositions[level.playerAnimIndex].x = playerRect.x;
-	// if(CheckCollisionRecs(platform, wall)){
-	// 	handleCollision(&platform, &wall, &vel, &vel2, true, true);
+	level.collidingRects[level.playerCollIndex].x += level.collidingVels[level.playerCollIndex].x;
+	// Rectangle playerRect = {level.animPositions[level.playerAnimIndex].x, level.animPositions[level.playerAnimIndex].y, level.animations[level.playerAnimIndex].destination.width, level.animations[level.playerAnimIndex].destination.height};
+	// // Check for collisions
+	// if(CheckCollisionRecs(playerRect, level.leftBound)){
+	// 	handleSingleXCollision(&playerRect, level.leftBound);
 	// }
+	// if(CheckCollisionRecs(playerRect, level.rightBound)){
+	// 	handleSingleXCollision(&playerRect, level.rightBound);
+	// }
+	level_handleBoundsCollisions(&level);
+	level_handleCollisions(&level);
+	level_updateAnimPositions(&level);
+	// Adjust animation positions
 	// Update Camera
-	boundedCamera_updateCamera(&camera, playerRect, level.leftBound.x+level.leftBound.width-level.boundOverextension,level.rightBound.x+level.boundOverextension);
+	boundedCamera_updateCamera(&camera, level.collidingRects[level.playerCollIndex], level.leftBound.x+level.leftBound.width-level.boundOverextension,level.rightBound.x+level.boundOverextension);
 	BeginDrawing();
 		ClearBackground(RAYWHITE);
 		DrawFPS(20, 20);
@@ -71,19 +70,41 @@ int main(){
 	Animation animations_one[2];
 	level.animations = animations_one;
 	animations_one[0] = animation_CreateAnimation(game.textures[0], 2, 50, 100, 0, 50, 50, 100);
-	animations_one[1] = animation_CreateAnimation(game.textures[1], 1, 40, 20, 0, 50, 80, 40);
+	animations_one[1] = animation_CreateAnimation(game.textures[1], 1, 40, 20, 0, 50, 1200, 40);
 	animations_one[1].drawTiled = true;
 	animations_one[1].tileScale = 2.0f;
 	level.animNum = 2;
 	Vector2 positions_one[2];
 	level.animPositions = positions_one;
 	positions_one[0] = (Vector2) {0, 0};
-	positions_one[1] = (Vector2) {0, 100};
+	positions_one[1] = (Vector2) {-300, 120};
 	level.playerAnimIndex = 0;
 	level.playerVelocity = (Vector2) {0,0};
 	level.leftBound = (Rectangle){-350,0,50, 600};
 	level.rightBound = (Rectangle){900,0,50,600};
 	level.boundOverextension = 10.0f;
+	Rectangle collRects[2];
+	level.collidingRects = collRects;
+	level.collidingRects[0] = (Rectangle){0, 0, 50, 100};
+	level.collidingRects[1] = (Rectangle){-300,120,1200,40};
+	bool moveable[2];
+	level.moveable = moveable;
+	level.moveable[0] = true;
+	level.moveable[1] = false;
+	Vector2 velocities_one[2];
+	level.collidingVels = velocities_one;
+	level.collidingVels[0] = (Vector2){0,0};
+	level.collidingVels[1] = (Vector2){0,0};
+	level.collNum = 2;
+	level.playerCollIndex = 0;
+	int levelMapKeys[2];
+	int levelMapVals[2];
+	level.collAnimMap.keys = levelMapKeys;
+	level.collAnimMap.vals = levelMapVals;
+	level.collAnimMap.keys[0] = 0;
+	level.collAnimMap.keys[1] = 1;
+	level.collAnimMap.vals[0] = 0;
+	level.collAnimMap.vals[1] = 1;
 	// ================= CAMERA SETUP ======================
 	camera.camera.target = (Vector2){-200, 0};
 	camera.camera.offset = (Vector2){0, 0};
